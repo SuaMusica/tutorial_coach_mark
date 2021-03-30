@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:tutorial_coach_mark/target_position.dart';
+import 'package:tutorial_coach_mark/src/target/target_position.dart';
 
 class LightPaintRect extends CustomPainter {
   final double progress;
-  final Offset positioned;
   final TargetPosition target;
   final Color colorShadow;
   final double opacityShadow;
@@ -15,7 +13,6 @@ class LightPaintRect extends CustomPainter {
 
   LightPaintRect({
     this.progress,
-    this.positioned,
     this.target,
     this.colorShadow = Colors.black,
     this.opacityShadow = 0.8,
@@ -41,8 +38,7 @@ class LightPaintRect extends CustomPainter {
 
     double h = maxSise * (1 - progress) + target.size.height + offset;
 
-    RRect rrect = RRect.fromRectAndRadius(
-        Rect.fromLTWH(x, y, w, h), Radius.circular(radius));
+    RRect rrect = RRect.fromRectAndRadius(Rect.fromLTWH(x, y, w, h), Radius.circular(radius));
     canvas.drawRRect(rrect, _paintFocus);
     canvas.restore();
   }

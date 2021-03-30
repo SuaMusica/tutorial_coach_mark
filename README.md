@@ -1,6 +1,9 @@
 [![pub package](https://img.shields.io/pub/v/tutorial_coach_mark.svg)](https://pub.dartlang.org/packages/tutorial_coach_mark)
+[![buymeacoffee](https://i.imgur.com/aV6DDA7.png)](https://www.buymeacoffee.com/rafaelbarbosa)
 
 # TutorialCoachMark
+
+Create a beautiful and easy tutorial for your application.
 
 Example 1             |  Example 2
 :-------------------------:|:-------------------------:
@@ -16,26 +19,32 @@ import 'package:flutter/material.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 void showTutorial() {
-    TutorialCoachMark(
+    TutorialCoachMark tutorial = TutorialCoachMark(
       context,
       targets: targets, // List<TargetFocus>
       colorShadow: Colors.red, // DEFAULT Colors.black
        // alignSkip: Alignment.bottomRight,
        // textSkip: "SKIP",
        // paddingFocus: 10,
-      finish: (){
+       // focusAnimationDuration: Duration(milliseconds: 500),
+       // pulseAnimationDuration: Duration(milliseconds: 500),
+      onFinish: (){
         print("finish");
       },
-      clickTarget: (target){
+      onClickTarget: (target){
         print(target);
       },
-      clickSkip: (){
+      onSkip: (){
         print("skip");
       }
     )..show();
+
+    // tutorial.skip();
+    // tutorial.finish();
+    // tutorial.next(); // call next target programmatically
+    // tutorial.previous(); // call previous target programmatically
   }
 ```
-#### WARN: Make sure your view has been rendered before calling 'show' so the lib can find the position of the widget on the screen.
 
 ### Creating targets (TargetFocus)
 
@@ -49,6 +58,13 @@ Attributes:
 | `keyTarget` | GlobalKey | GlobalKey widget that wants to be focused |
 | `targetPosition` | TargetPosition | If you do not want to use GlobalKey, you can create a TargetPosition to determine where to focus |
 | `contents` | ContentTarget[] | Content list you want to display after focusing widget |
+| `shape` | ShapeLightFocus | ShapeLightFocus.Circle or ShapeLightFocus.RRect |
+| `radius` | double | Use when shape = ShapeLightFocus.RRect |
+| `color` | Color | Custom color to target |
+| `enableOverlayTab` | bool | enable click in all screen to call next step |
+| `enableTargetTab` | bool | enable click in target to call next step |
+| `alignSkip` | Alignment | use to align the skip in the target |
+| `paddingFocus` | Alignment | settings padding of the focus in target |
 
 ### Creating contents (ContentTarget)
 
@@ -60,6 +76,7 @@ Attributes:
 | --- | --- | --- |
 | `align` | AlignContent | With this attribute you determine in which region to display the content in relation to the focused widget (top,bottom,left,right) |
 | `child` | Widget | Content you want to be displayed |
+| `customPosition` | CustomTargetContentPosition | Add custom position when `align` is AlignContent.custom |
 
 ### Example Complete
 
@@ -76,8 +93,8 @@ List<TargetFocus> targets = List();
             identify: "Target 1",
             keyTarget: keyButton,
             contents: [
-              ContentTarget(
-                  align: AlignContent.bottom,
+              TargetContent(
+                  align: ContentAlign.bottom,
                   child: Container(
                     child:Column(
                       mainAxisSize: MainAxisSize.min,
@@ -111,8 +128,8 @@ List<TargetFocus> targets = List();
             identify: "Target 2",
             keyTarget: keyButton4,
             contents: [
-              ContentTarget(
-                  align: AlignContent.left,
+              TargetContent(
+                  align: ContentAlign.left,
                   child: Container(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -137,8 +154,8 @@ List<TargetFocus> targets = List();
                     ),
                   )
               ),
-              ContentTarget(
-                  align: AlignContent.top,
+              TargetContent(
+                  align: ContentAlign.top,
                   child: Container(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -172,8 +189,8 @@ List<TargetFocus> targets = List();
             identify: "Target 3",
             keyTarget: keyButton5,
             contents: [
-              ContentTarget(
-                  align: AlignContent.right,
+              TargetContent(
+                  align: ContentAlign.right,
                   child: Container(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -212,15 +229,18 @@ void showTutorial() {
        // textSkip: "SKIP",
        // paddingFocus: 10,
        // opacityShadow: 0.8,
-      finish: (){
-        print("finish");
-      },
-      clickTarget: (target){
+      onClickTarget: (target){
         print(target);
       },
-      clickSkip: (){
+      onClickOverlay: (target){
+        print(target);
+      },
+      onSkip: (){
         print("skip");
-      }
+      },
+      onFinish: (){
+        print("finish");
+      },
     )..show();
   }
 ```
